@@ -1,0 +1,51 @@
+#  Local .terraform directories
+**/.terraform/*
+
+*.lock.hcl
+
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+**/terraform.state.d/*
+
+# .tfvars files
+*.tfvars
+**/*.tfvars
+*.plan
+*.plan.txt
+
+# Mac stuff
+.DS_Store
+
+.terraform
+.vscode
+
+*.pem
+
+sandbox
+
+vars.json
+
+secrets.tf
+logs
+*.log
+*-old
+*_log
+
+**/bin/*
+**/auth/*
+**/home/*
+**/cluster/*
+**/backup/*
+**/scripts/rosa
+
+**/.ssh/*
+
+**/bin2
+makefile
+ibm-roks-vpc-airgapped/finalizer/easy-rsa
+
+*env.sh
+
+kubeconfig

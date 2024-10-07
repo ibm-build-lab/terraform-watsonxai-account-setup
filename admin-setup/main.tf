@@ -215,6 +215,14 @@ resource "ibm_iam_access_group_policy" "admins_all_resource_groups_policy" {
 #   access_groups = [ibm_iam_access_group.acct_mgr_admins_access_group.id]
 # }
 
+removed {
+  from = ibm_iam_user_invite.invite_user[0]
+
+  lifecycle {
+    destroy = false
+  }
+}
+
 resource "ibm_iam_access_group_members" "acct_mgr_admins_members" {
   access_group_id = ibm_iam_access_group.acct_mgr_admins_access_group.id
   ibm_ids         = var.acct_mgr_admins_user_ids

@@ -22,8 +22,14 @@ variable "acct_mgr_admins_access_group_name" {
   default     = "WATSONX-MGR-ADMIN"
 }
 
+variable "invite_admins" {
+  type        = bool
+  description = "Invite users to account if true invites all users, if false keeps current users"
+  default     = true
+}
+
 variable "acct_mgr_admins_user_ids" {
   type        = list(string)
-  description = "Names of the users to add to the watsonx Admin access group - do not include account owner IBMid"
+  description = "Names of the users in the manager access group - do not include account owner IBMid"
   default     = [""]
 }

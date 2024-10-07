@@ -209,13 +209,13 @@ resource "ibm_iam_access_group_policy" "admins_all_resource_groups_policy" {
  */
 
 resource "ibm_iam_user_invite" "invite_user" {
-  count = length(var.acct_mgr_admins_user_ids[0]) > 3 ? 1 : 0
+  count = var.invite_admins ? 1 : 0
 
   users         = var.acct_mgr_admins_user_ids
   access_groups = [ibm_iam_access_group.acct_mgr_admins_access_group.id]
 }
 
-# resource "ibm_iam_access_group_members" "acct_mgr_admins_members" {
-#   access_group_id = ibm_iam_access_group.acct_mgr_admins_access_group.id
-#   ibm_ids         = var.acct_mgr_admins_user_ids
-# }
+resource "ibm_iam_access_group_members" "acct_mgr_admins_members" {
+  access_group_id = ibm_iam_access_group.acct_mgr_admins_access_group.id
+  ibm_ids         = var.acct_mgr_admins_user_ids
+}

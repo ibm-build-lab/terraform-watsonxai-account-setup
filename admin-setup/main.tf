@@ -208,12 +208,12 @@ resource "ibm_iam_access_group_policy" "admins_all_resource_groups_policy" {
  * Invite to the account watsonx environment admins (IBMers)
  */
 
-resource "ibm_iam_user_invite" "invite_user" {
-  count = var.invite_admins ? 1 : 0
+# resource "ibm_iam_user_invite" "invite_user" {
+#   count = var.invite_admins ? 1 : 0
 
-  users         = var.acct_mgr_admins_user_ids
-  access_groups = [ibm_iam_access_group.acct_mgr_admins_access_group.id]
-}
+#   users         = var.acct_mgr_admins_user_ids
+#   access_groups = [ibm_iam_access_group.acct_mgr_admins_access_group.id]
+# }
 
 resource "ibm_iam_access_group_members" "acct_mgr_admins_members" {
   access_group_id = ibm_iam_access_group.acct_mgr_admins_access_group.id

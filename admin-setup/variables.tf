@@ -1,7 +1,19 @@
-variable "at_plan" {
+variable "logs_retention" {
   type        = string
-  description = "Activity tracker plan to use for AT instances."
-  default     = "30-day"
+  description = "Retention period in days to use, one of 7, 14, 30, 90 ."
+  default     = "7"
+}
+
+variable "cl_plan" {
+  type        = string
+  description = "Cloud Logs plan to use for AT data."
+  default     = "standard"
+}
+
+variable "cos_plan" {
+  type        = string
+  description = "COS plan to use for Cloud Logs buckets."
+  default     = "standard"
 }
 
 variable "acct_mgr_admins_access_group_name" {

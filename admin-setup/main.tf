@@ -216,7 +216,7 @@ resource "ibm_iam_access_group_policy" "admins_all_resource_groups_policy" {
 # }
 
 removed {
-  from = ibm_iam_user_invite.invite_user[0]
+  from = ibm_iam_user_invite.invite_user
 
   lifecycle {
     destroy = false

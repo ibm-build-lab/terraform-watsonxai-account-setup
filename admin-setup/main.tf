@@ -134,7 +134,7 @@ resource "ibm_logs_router_tenant" "logs_router_tenant_instance_eu_de" {
 }
 
 # Add tenant for platform logs for us-east
-resource "ibm_logs_router_tenant" "logs_router_tenant_instance_eu_de" {
+resource "ibm_logs_router_tenant" "logs_router_tenant_instance_us_east" {
   name = "cloud-logs-router-tenant-us-east"
   region = "eu-de"
   targets {
@@ -148,7 +148,7 @@ resource "ibm_logs_router_tenant" "logs_router_tenant_instance_eu_de" {
 }
 
 # Add tenant for platform logs for us-south
-resource "ibm_logs_router_tenant" "logs_router_tenant_instance_eu_de" {
+resource "ibm_logs_router_tenant" "logs_router_tenant_instance_us_south" {
   name = "cloud-logs-router-tenant-us-south"
   region = "eu-de"
   targets {

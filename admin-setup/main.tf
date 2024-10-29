@@ -127,7 +127,7 @@ resource "ibm_logs_router_tenant" "logs_router_tenant_instance_eu_de" {
         log_sink_crn = ibm_resource_instance.cloud_logs_instance.crn
         name = "cloud-logs-target-eu-de"
         parameters {
-            host = "${ibm_resource_instance.cloud_logs_instance.extensions.guid}.ingress.eu-de.logs.cloud.ibm.com"
+            host = "${ibm_resource_instance.cloud_logs_instance.guid}.ingress.eu-de.logs.cloud.ibm.com"
             port = 443
         }
   }
@@ -141,7 +141,7 @@ resource "ibm_logs_router_tenant" "logs_router_tenant_instance_us_east" {
         log_sink_crn = ibm_resource_instance.cloud_logs_instance.crn
         name = "cloud-logs-target-us-east"
         parameters {
-            host = "${ibm_resource_instance.cloud_logs_instance.extensions.guid}.ingress.us-east.logs.cloud.ibm.com"
+            host = "${ibm_resource_instance.cloud_logs_instance.guid}.ingress.us-east.logs.cloud.ibm.com"
             port = 443
         }
   }
@@ -155,7 +155,7 @@ resource "ibm_logs_router_tenant" "logs_router_tenant_instance_us_south" {
         log_sink_crn = ibm_resource_instance.cloud_logs_instance.crn
         name = "cloud-logs-target-us-south"
         parameters {
-            host = "${ibm_resource_instance.cloud_logs_instance.extensions.guid}.ingress.us-south.logs.cloud.ibm.com"
+            host = "${ibm_resource_instance.cloud_logs_instance.guid}.ingress.us-south.logs.cloud.ibm.com"
             port = 443
         }
   }

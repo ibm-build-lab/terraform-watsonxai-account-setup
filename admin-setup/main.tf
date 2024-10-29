@@ -111,7 +111,55 @@ resource "ibm_iam_authorization_policy" "atracker_policy" {
   roles                       = ["Sender"]
 }
 
+# Add permission from logs router service to cloud logs service instance
+resource "ibm_iam_authorization_policy" "platform_log_policy" {
+  source_service_name         = "logs-router"
+  target_service_name         = "logs"
+  target_resource_instance_id = ibm_resource_instance.cloud_logs_instance.guid
+  roles                       = ["Sender"]
+}
 
+# Add tenant for platform logs for eu-de
+resource "ibm_logs_router_tenant" "logs_router_tenant_instance_eu_de" {
+  name = "cloud-logs-router-tenant-eu-de"
+  region = "eu-de"
+  targets {
+        log_sink_crn = ibm_resource_instance.cloud_logs_instance.crn
+        name = "cloud-logs-target-eu-de"
+        parameters {
+            host = "${ibm_resource_instance.cloud_logs_instance.guid}.ingress.eu-de.logs.cloud.ibm.com"
+            port = 443
+        }
+  }
+}
+
+# Add tenant for platform logs for us-east
+resource "ibm_logs_router_tenant" "logs_router_tenant_instance_us_east" {
+  name = "cloud-logs-router-tenant-us-east"
+  region = "us-east"
+  targets {
+        log_sink_crn = ibm_resource_instance.cloud_logs_instance.crn
+        name = "cloud-logs-target-us-east"
+        parameters {
+            host = "${ibm_resource_instance.cloud_logs_instance.guid}.ingress.us-east.logs.cloud.ibm.com"
+            port = 443
+        }
+  }
+}
+
+# Add tenant for platform logs for us-south
+resource "ibm_logs_router_tenant" "logs_router_tenant_instance_us_south" {
+  name = "cloud-logs-router-tenant-us-south"
+  region = "us-south"
+  targets {
+        log_sink_crn = ibm_resource_instance.cloud_logs_instance.crn
+        name = "cloud-logs-target-us-south"
+        parameters {
+            host = "${ibm_resource_instance.cloud_logs_instance.guid}.ingress.us-south.logs.cloud.ibm.com"
+            port = 443
+        }
+  }
+}
 
 ## Create access group for watsonx administrators
 resource "ibm_iam_access_group" "acct_mgr_admins_access_group" {

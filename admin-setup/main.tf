@@ -127,9 +127,9 @@ resource "ibm_iam_authorization_policy" "atracker_policy" {
 resource "ibm_atracker_target" "atracker_cos_target" {
   count = var.use_cos_for_at ? 1 : 0
   cos_endpoint {
-     endpoint = ibm_cos_bucket.at-events-smart-us-south-rand.s3_endpoint_public
+     endpoint = ibm_cos_bucket.at-events-smart-us-south-rand[0].s3_endpoint_public
      target_crn = ibm_resource_instance.cos_instance.crn
-     bucket = ibm_cos_bucket.at-events-smart-us-south-rand.bucket_name
+     bucket = ibm_cos_bucket.at-events-smart-us-south-rand[0].bucket_name
   }
   name = "at-cos-target-us-south"
   target_type = "cloud_object_storage"
@@ -141,7 +141,7 @@ resource "ibm_atracker_route" "atracker_cos_route" {
   count = var.use_cos_for_at ? 1 : 0
   name = "atracker-cos-route"
   rules {
-    target_ids = [ ibm_atracker_target.atracker_cos_target.id ]
+    target_ids = [ ibm_atracker_target.atracker_cos_target[0].id ]
     locations = [ "us-south", "eu-de", "global" ]
   }
   lifecycle {

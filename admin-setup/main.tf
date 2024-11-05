@@ -24,6 +24,7 @@ resource "ibm_resource_instance" "cos_instance" {
   }
 }
 
+# bucket for cloud logs event data
 resource "ibm_cos_bucket" "cl-data-smart-us-south-rand" {
   bucket_name          = "cloud-logs-data-us-south-${random_string.suffix.result}"
   resource_instance_id = ibm_resource_instance.cos_instance.id
@@ -31,8 +32,18 @@ resource "ibm_cos_bucket" "cl-data-smart-us-south-rand" {
   storage_class        = "standard"
 }
 
+# bucket for cloud logs metric data
 resource "ibm_cos_bucket" "cl-metrics-smart-us-south-rand" {
   bucket_name          = "cloud-logs-metrics-us-south-${random_string.suffix.result}"
+  resource_instance_id = ibm_resource_instance.cos_instance.id
+  region_location      = "us-south"
+  storage_class        = "standard"
+}
+
+# bucket for activity tracker events
+resource "ibm_cos_bucket" "at-events-smart-us-south-rand" {
+  count = var.use_cos_for_at ? 1 : 0
+  bucket_name          = "at-events-us-south-${random_string.suffix.result}"
   resource_instance_id = ibm_resource_instance.cos_instance.id
   region_location      = "us-south"
   storage_class        = "standard"
@@ -70,7 +81,7 @@ resource "ibm_iam_authorization_policy" "logs-to-cos-policy" {
   roles                       = ["Writer"]
 }
 
-# Add ATracker target
+# Create ATracker target for cloud logs instance
 resource "ibm_atracker_target" "atracker_cloudlogs_target" {
   cloudlogs_endpoint {
     target_crn = ibm_resource_instance.cloud_logs_instance.crn
@@ -91,11 +102,12 @@ resource "ibm_atracker_settings" "atracker_settings" {
   }
 }
 
+# Define route for activity tracker to cloud logs service
 resource "ibm_atracker_route" "atracker_route" {
-  name = "atracker-single-route"
+  name = "atracker-cloudlogs-route"
   rules {
     target_ids = [ ibm_atracker_target.atracker_cloudlogs_target.id ]
-    locations = [ "us-south", "global" ]
+    locations = [ "us-south", "eu-de", "global" ]
   }
   lifecycle {
     # Recommended to ensure that if a target ID is removed here and destroyed in a plan, this is updated first
@@ -109,6 +121,42 @@ resource "ibm_iam_authorization_policy" "atracker_policy" {
   target_service_name         = "logs"
   target_resource_instance_id = ibm_resource_instance.cloud_logs_instance.guid
   roles                       = ["Sender"]
+}
+
+# Create ATracker target for cloud logs instance
+resource "ibm_atracker_target" "atracker_cos_target" {
+  count = var.use_cos_for_at ? 1 : 0
+  cos_endpoint {
+     endpoint = ibm_cos_bucket.at-events-smart-us-south-rand.s3_endpoint_public
+     target_crn = ibm_resource_instance.cos_instance.crn
+     bucket = ibm_cos_bucket.at-events-smart-us-south-rand.bucket_name
+  }
+  name = "at-cos-target-us-south"
+  target_type = "cloud_object_storage"
+  region = "us-south"
+}
+
+# Define route for activity tracker to cos service
+resource "ibm_atracker_route" "atracker_cos_route" {
+  count = var.use_cos_for_at ? 1 : 0
+  name = "atracker-cos-route"
+  rules {
+    target_ids = [ ibm_atracker_target.atracker_cos_target.id ]
+    locations = [ "us-south", "eu-de", "global" ]
+  }
+  lifecycle {
+    # Recommended to ensure that if a target ID is removed here and destroyed in a plan, this is updated first
+    create_before_destroy = true
+  }
+}
+
+# Add permission from atracker service instance to cloud object storage
+resource "ibm_iam_authorization_policy" "atracker_cos_policy" {
+  count = var.use_cos_for_at ? 1 : 0
+  source_service_name         = "atracker"
+  target_service_name         = "cloud-object-storage"
+  target_resource_instance_id = ibm_resource_instance.cos_instance.guid
+  roles                       = ["Writer"]
 }
 
 # Add permission from logs router service to cloud logs service instance

@@ -130,6 +130,7 @@ resource "ibm_atracker_target" "atracker_cos_target" {
      endpoint = ibm_cos_bucket.at-events-smart-us-south-rand[0].s3_endpoint_public
      target_crn = ibm_resource_instance.cos_instance.crn
      bucket = ibm_cos_bucket.at-events-smart-us-south-rand[0].bucket_name
+     service_to_service_enabled = true 
   }
   name = "at-cos-target-us-south"
   target_type = "cloud_object_storage"
@@ -156,7 +157,7 @@ resource "ibm_iam_authorization_policy" "atracker_cos_policy" {
   source_service_name         = "atracker"
   target_service_name         = "cloud-object-storage"
   target_resource_instance_id = ibm_resource_instance.cos_instance.guid
-  roles                       = ["Writer"]
+  roles                       = ["Object Writer"]
 }
 
 # Add permission from logs router service to cloud logs service instance

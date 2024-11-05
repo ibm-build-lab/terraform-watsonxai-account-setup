@@ -27,3 +27,9 @@ variable "acct_mgr_admins_user_ids" {
   description = "Names of the users to add to the watsonx Admin access group - do not include account owner IBMid"
   default     = [""]
 }
+
+variable "use_cos_for_at" {
+  type = bool
+  description = "Also configure an activity tracker target and route to a cos bucket"
+  default = true
+}

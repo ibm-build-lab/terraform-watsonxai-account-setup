@@ -122,6 +122,8 @@ resource "ibm_iam_access_group_policy" "rg_policy" {
 }
 
 resource "ibm_iam_access_group_policy" "ml_policy" {
+  count = var.install_ml ? 1 : 0
+
   access_group_id = ibm_iam_access_group.accgrp.id
   roles           = ["Manager", "Editor"]
   resources {
@@ -142,6 +144,8 @@ resource "ibm_iam_access_group_policy" "os_policy" {
 }
 
 resource "ibm_iam_access_group_policy" "ws_policy" {
+  count = var.install_ws ? 1 : 0
+
   access_group_id = ibm_iam_access_group.accgrp.id
   roles           = ["Operator", "Editor"]
   resources {
@@ -151,6 +155,8 @@ resource "ibm_iam_access_group_policy" "ws_policy" {
 }
 
 resource "ibm_iam_access_group_policy" "cos_policy" {
+  count = var.install_cos ? 1 : 0
+
   access_group_id = ibm_iam_access_group.accgrp.id
   roles           = ["Manager", "Viewer", "Administrator"]
 
@@ -187,6 +193,8 @@ resource "ibm_iam_access_group_policy" "rg_policy_min" {
 }
 
 resource "ibm_iam_access_group_policy" "ml_policy_min" {
+  count = var.install_ml ? 1 : 0
+
   access_group_id = ibm_iam_access_group.min-accgrp.id
   roles           = ["Viewer"]
   resources {
@@ -196,6 +204,8 @@ resource "ibm_iam_access_group_policy" "ml_policy_min" {
 }
 
 resource "ibm_iam_access_group_policy" "ws_policy_min" {
+  count = var.install_ws ? 1 : 0
+
   access_group_id = ibm_iam_access_group.min-accgrp.id
   roles           = ["Viewer"]
   resources {
@@ -205,6 +215,8 @@ resource "ibm_iam_access_group_policy" "ws_policy_min" {
 }
 
 resource "ibm_iam_access_group_policy" "cos_policy_min" {
+  count = var.install_cos ? 1 : 0
+  
   access_group_id = ibm_iam_access_group.min-accgrp.id
   roles           = ["Reader", "Viewer" ]
 
